@@ -1,1 +1,6 @@
-window.crudURL = 'http://jb4.smartjs.academy/api/users';
+(function(){
+
+window.crudURL = 'http://ex1.smartjs.academy/';
+window.dispatcher = new Flux.Dispatcher();
+
+})();
