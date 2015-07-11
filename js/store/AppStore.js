@@ -10,6 +10,7 @@
     _numUsers: null,
     _chat: [],
     _listeners: [],
+    _typing: {},
 
     pushChat: function(message){
       this._chat.push(message);
@@ -46,6 +47,10 @@
       return this._chat;
     },
 
+    getTyping: function(){
+      return this._typing;
+    },
+
     connectWith: function(callback){
       this._listeners.push(callback);
     },
@@ -59,7 +64,18 @@
     // FOR DISPATCHER
     newMessage: function(username, message){
       this.pushChat(username + "> " + message);
+    },
 
+    newTyping: function(username){
+
+      this._typing[username] = username;
+      console.log(this._typing);
+    },
+
+    delTyping: function(username){
+      console.log("delTyping1",this._typing);
+      delete this._typing[username];
+      console.log("delTyping2",this._typing);
     },
 
     joinedUser: function(name){
@@ -80,7 +96,15 @@
 
     setLogged: function(logged){
       this._logged = logged;
+    },
 
+    userTyping: function(username){
+      console.log("userTyping");
+      this.newTyping(username);
+    },
+
+    userStopTyping: function(username){
+      this.delTyping(username);
     }
 
     // FOR DISPATCHER
@@ -114,7 +138,14 @@
         AppStore.setNumUsers(event.value);
         AppStore.setLogged(true);
         AppStore.storeChanges();
-
+        break;
+      case "USER_TYPING":
+        AppStore.userTyping(event.username);
+        AppStore.storeChanges();
+        break;
+      case "USER_STOP_TYPING":
+        AppStore.userStopTyping(event.username);
+        AppStore.storeChanges();
         break;
     }
   });

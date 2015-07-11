@@ -5,7 +5,8 @@ var ChatPage = React.createClass({
       name: '',
       numUsers: '',
       chat: [],
-      message: ''
+      message: '',
+      typing: {},
     }
   },
 
@@ -16,6 +17,8 @@ var ChatPage = React.createClass({
     });
 
     AppStore.connectWith(this.listenStore);
+    this.debounceTyping = _.debounce(this.typing, 500, {leading:true});
+    this.debounceStopTyping = _.debounce(this.stopTyping, 2000 ,{leading:false});
   },
 
   componentDidMount: function() {
@@ -26,7 +29,8 @@ var ChatPage = React.createClass({
     this.setState({
       name: AppStore.getUserName(),
       chat: AppStore.getChat(),
-      numUsers: AppStore.getNumUsers()
+      numUsers: AppStore.getNumUsers(),
+      typing: AppStore.getTyping(),
     });
   },
 
@@ -37,10 +41,21 @@ var ChatPage = React.createClass({
   },
 
   messageChanges: function(e){
+    var self = this;
     var message = e.target.value;
     this.setState({
       message: message
     });
+    this.debounceTyping();
+    this.debounceStopTyping();
+  },
+
+  typing: function(){
+    dispatcher.dispatch({name:"I_TYPING"});
+  },
+
+  stopTyping: function(){
+    dispatcher.dispatch({name:"I_STOP_TYPING"});
   },
 
   clearMessageAndPrint: function(){
@@ -51,26 +66,33 @@ var ChatPage = React.createClass({
   render: function() {
 
     var list = [];
-
     for (var i=0; i<this.state.chat.length;i++){
       list.push(<li>{this.state.chat[i]}</li>);
     }
 
+    var typing = [];
+    _.forEach(this.state.typing, function(n,username){
+      typing.push(<li>{username} typing...</li>);
+    });
+
     return (
-      <ul class="pages">
-        <li className="item">
+      <ul className="pages">
+        <li className="item chat page">
           Name: {this.state.name},
           NumUsers: {this.state.numUsers},
-        </li>
-        <li className="item">
+
           <div className="chatArea">
             <ul className="messages">
               {list}
             </ul>
+
+            <ul className="messages">
+              {typing}
+            </ul>
           </div>
         </li>
         <li className="item">
-          <form onSubmit={this.sendMessage}>
+          <form className="formMessage" onSubmit={this.sendMessage}>
             <input className="inputMessage" type="text" ref="message" onChange={this.messageChanges} value={this.state.message} />
           </form>
         </li>

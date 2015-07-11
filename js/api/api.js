@@ -2,7 +2,6 @@
   var socket = io(crudURL);
 
   socket.on('connect', function(){
-
     console.log('a user connected');
     socket.on('disconnect', function(){
       console.log('user disconnected');
@@ -17,8 +16,13 @@
       case "MY_NEW_MESSAGE":
         socket.emit('new message', event.message);
         break;
-
-
+      case "I_TYPING":
+        socket.emit('typing');
+        break;
+      case "I_STOP_TYPING":
+        console.log("stop typing");
+        socket.emit('stop typing');
+        break;
       default:
         break;
     }
@@ -30,6 +34,15 @@
 
   socket.on('new message', function(data){
     dispatcher.dispatch({name: "USERS_NEW_MESSAGE", username: data.username, message: data.message});
+  });
+
+  socket.on('typing', function(data){
+    console.log("socket typing");
+    dispatcher.dispatch({name: "USER_TYPING", username: data.username});
+  });
+
+  socket.on('stop typing', function(data){
+    dispatcher.dispatch({name: "USER_STOP_TYPING", username: data.username});
   });
 
 
