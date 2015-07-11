@@ -1,0 +1,11 @@
+.StudentListItem {
+    border: 1px solid #000000;
+}
+
+.redcard{
+    background-color: red;
+}
+
+.removed{
+    background-color: #ccc;
+}
