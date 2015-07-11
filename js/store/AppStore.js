@@ -108,12 +108,12 @@
 
       case "LOGIN":
         AppStore.setUserName(event.value);
-        this.storeChanges();
+        AppStore.storeChanges();
         break;
       case "LOGGED":
         AppStore.setNumUsers(event.value);
         AppStore.setLogged(true);
-        this.storeChanges();
+        AppStore.storeChanges();
 
         break;
     }

@@ -10,7 +10,6 @@ var App = React.createClass({
 
   componentWillMount: function(){
     AppStore.connectWith(this.listenStore);
-    this.listenStore();
   },
 
   listenStore: function(){

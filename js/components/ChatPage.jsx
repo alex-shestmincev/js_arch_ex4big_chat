@@ -18,6 +18,10 @@ var ChatPage = React.createClass({
     AppStore.connectWith(this.listenStore);
   },
 
+  componentDidMount: function() {
+    this.refs.message.getDOMNode().focus()
+  },
+
   listenStore: function(){
     this.setState({
       name: AppStore.getUserName(),
@@ -49,21 +53,29 @@ var ChatPage = React.createClass({
     var list = [];
 
     for (var i=0; i<this.state.chat.length;i++){
-      list.push(<p>{this.state.chat[i]}</p>);
+      list.push(<li>{this.state.chat[i]}</li>);
     }
 
     return (
-      <div>
-        Name: {this.state.name},
-        NumUsers: {this.state.numUsers},
+      <ul class="pages">
+        <li className="item">
+          Name: {this.state.name},
+          NumUsers: {this.state.numUsers},
+        </li>
+        <li className="item">
+          <div className="chatArea">
+            <ul className="messages">
+              {list}
+            </ul>
+          </div>
+        </li>
+        <li className="item">
+          <form onSubmit={this.sendMessage}>
+            <input className="inputMessage" type="text" ref="message" onChange={this.messageChanges} value={this.state.message} />
+          </form>
+        </li>
 
-        Chat: {list}
-
-        <form onSubmit={this.sendMessage}>
-          <input type="text" ref="message" onChange={this.messageChanges} value={this.state.message} />
-        </form>
-
-      </div>
+      </ul>
     );
   }
 });

@@ -24,10 +24,10 @@ var LoginPage = React.createClass({
 
 
     return (
-      <div>
+      <div className="loginForm">
         <form onSubmit={this.logInSubmit} >
-          <label>What's your nickname?</label>
-          <input type="text" onChange={this.loginChanges}   />
+          <label>What's your nickname?</label><br />
+          <input type="text" onChange={this.loginChanges} /><br />
           <input type="submit" value="Log In"/>
         </form>
       </div>
