@@ -1,6 +1,5 @@
 (function() {
 
-
   var AppStore = {
 
     // PRIVATE
@@ -67,15 +66,15 @@
     },
 
     newTyping: function(username){
-
+      var self = this;
       this._typing[username] = username;
-      console.log(this._typing);
+      setTimeout(function(){
+        self.delTyping(username);
+      },10000);
     },
 
     delTyping: function(username){
-      console.log("delTyping1",this._typing);
       delete this._typing[username];
-      console.log("delTyping2",this._typing);
     },
 
     joinedUser: function(name){
@@ -99,7 +98,6 @@
     },
 
     userTyping: function(username){
-      console.log("userTyping");
       this.newTyping(username);
     },
 
