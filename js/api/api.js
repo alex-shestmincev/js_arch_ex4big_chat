@@ -12,9 +12,13 @@
   dispatcher.register(function(event){
     switch (event.name){
       case "LOGIN":
-        console.log("case event",event);
         socket.emit('add user', event.value);
         break;
+      case "MY_NEW_MESSAGE":
+        socket.emit('new message', event.message);
+        break;
+
+
       default:
         break;
     }
@@ -24,12 +28,18 @@
     dispatcher.dispatch({name: "LOGGED", value: data.numUsers});
   });
 
+  socket.on('new message', function(data){
+    dispatcher.dispatch({name: "USERS_NEW_MESSAGE", username: data.username, message: data.message});
+  });
+
+
+
   socket.on('user joined', function(data){
-    dispatcher.dispatch({name: "USER_JOINED", value: data.numUsers});
+    dispatcher.dispatch({name: "USER_JOINED", username: data.username, numUsers: data.numUsers});
   });
 
   socket.on('user left', function(data){
-    dispatcher.dispatch({name: "LOGGED", value: data.numUsers});
+    dispatcher.dispatch({name: "USER_LEFT", username: data.username, numUsers: data.numUsers});
   });
 
 
