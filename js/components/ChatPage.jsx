@@ -7,6 +7,8 @@ var ChatPage = React.createClass({
       chat: [],
       message: '',
       typing: {},
+
+      user_scrolling: false
     }
   },
 
@@ -22,7 +24,34 @@ var ChatPage = React.createClass({
   },
 
   componentDidMount: function() {
-    this.refs.message.getDOMNode().focus()
+    this.refs.message.getDOMNode().focus();
+    var self = this;
+
+    var elem = document.getElementById('chatArea');
+    elem.onscroll = function() {
+      var scrolled = elem.pageYOffset || elem.scrollTop;
+
+      var diff = elem.scrollHeight - elem.scrollTop - elem.offsetHeight;
+      if (!self.state.user_scrolling && diff > 100){ // Если разница между высотой окна скроллинга и отступов меньше 100px
+        self.setState({
+          user_scrolling: true
+        });
+      }else if(self.state.user_scrolling && diff < 100){
+        self.setState({
+          user_scrolling: false
+        });
+      }
+    }
+  },
+
+
+  componentDidUpdate(){
+    if (!this.state.user_scrolling){
+      setTimeout(function() {
+        var elem = document.getElementById('chatArea');
+        elem.scrollTop = elem.scrollHeight;
+      }, 500);
+    }
   },
 
   listenStore: function(){
@@ -82,14 +111,13 @@ var ChatPage = React.createClass({
           Name: {this.state.name},
           NumUsers: {this.state.numUsers},
 
-          <div className="chatArea">
+          <div id="chatArea">
             <ul className="messages">
               {list}
-            </ul>
-
-            <ul className="messages">
               {typing}
             </ul>
+
+
           </div>
         </li>
         <li className="item">

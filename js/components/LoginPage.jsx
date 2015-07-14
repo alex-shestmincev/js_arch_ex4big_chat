@@ -6,6 +6,10 @@ var LoginPage = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    this.refs.login.getDOMNode().focus()
+  },
+
   loginChanges: function(e){
     var login = e.target.value;
     this.setState({
@@ -27,8 +31,7 @@ var LoginPage = React.createClass({
       <div className="loginForm">
         <form onSubmit={this.logInSubmit} >
           <label>What's your nickname?</label><br />
-          <input type="text" onChange={this.loginChanges} /><br />
-          <input type="submit" value="Log In"/>
+          <input type="text" ref="login" onChange={this.loginChanges} /><br />
         </form>
       </div>
     );
