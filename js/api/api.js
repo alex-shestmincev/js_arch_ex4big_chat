@@ -23,6 +23,10 @@
         console.log("stop typing");
         socket.emit('stop typing');
         break;
+      case "CHECK_IMAGE":
+        loadImage(event.src);
+        break;
+
       default:
         break;
     }
@@ -54,6 +58,18 @@
   socket.on('user left', function(data){
     dispatcher.dispatch({name: "USER_LEFT", username: data.username, numUsers: data.numUsers});
   });
+
+
+  function loadImage(src){
+    console.log("loadImage", src);
+
+    var img = new Image();
+    img.src = src;
+    img.onload = function() {
+      console.log("image onload", img);
+      dispatcher.dispatch({name: "CHECK_IMAGE_TRUE", src: src});
+    };
+  }
 
 
 

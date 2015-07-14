@@ -10,6 +10,7 @@
     _chat: [],
     _listeners: [],
     _typing: {},
+    _valid_images: {},
 
     pushChat: function(message){
       this._chat.push(message);
@@ -55,9 +56,6 @@
     },
 
 
-
-
-
     // API
 
     // FOR DISPATCHER
@@ -95,6 +93,17 @@
 
     setLogged: function(logged){
       this._logged = logged;
+    },
+
+    addImage: function(src){
+      this._valid_images[src] = src;
+    },
+
+    getImage: function(src){
+      if (this._valid_images[src]){
+       return this._valid_images[src];
+      }
+      return "";
     },
 
     userTyping: function(username){
@@ -145,6 +154,9 @@
         AppStore.userStopTyping(event.username);
         AppStore.storeChanges();
         break;
+      case "CHECK_IMAGE_TRUE":
+        AppStore.addImage(event.src);
+        AppStore.storeChanges();
     }
   });
 

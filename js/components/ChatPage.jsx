@@ -67,7 +67,8 @@ var ChatPage = React.createClass({
 
     var list = [];
     for (var i=0; i<this.state.chat.length;i++){
-      list.push(<li>{this.state.chat[i]}</li>);
+
+      list.push(<ChatItem message={this.state.chat[i]} />);
     }
 
     var typing = [];
