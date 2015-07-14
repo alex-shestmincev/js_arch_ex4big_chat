@@ -2,9 +2,9 @@
   var socket = io(crudURL);
 
   socket.on('connect', function(){
-    console.log('a user connected');
+    //console.log('a user connected');
     socket.on('disconnect', function(){
-      console.log('user disconnected');
+      //console.log('user disconnected');
     });
   });
 
@@ -20,7 +20,6 @@
         socket.emit('typing');
         break;
       case "I_STOP_TYPING":
-        console.log("stop typing");
         socket.emit('stop typing');
         break;
       case "CHECK_IMAGE":
@@ -41,7 +40,6 @@
   });
 
   socket.on('typing', function(data){
-    console.log("socket typing");
     dispatcher.dispatch({name: "USER_TYPING", username: data.username});
   });
 
@@ -61,12 +59,9 @@
 
 
   function loadImage(src){
-    console.log("loadImage", src);
-
     var img = new Image();
     img.src = src;
     img.onload = function() {
-      console.log("image onload", img);
       dispatcher.dispatch({name: "CHECK_IMAGE_TRUE", src: src});
     };
   }

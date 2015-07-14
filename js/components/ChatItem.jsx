@@ -11,17 +11,17 @@ var ChatItem = React.createClass({
     var re = /https?:\/\/[\S]+/g;
     var self = this;
     var res = this.props.message.match(re);
-    console.log(res);
     if (res){
       res.forEach(function(url){
-        console.log("chatitem url",url);
         AppStore.connectWith(function(){
-          console.log("AppStore.getImage(url)", AppStore.getImage(url));
           self.setState({
             url: AppStore.getImage(url)
           });
         });
-        dispatcher.dispatch({name:"CHECK_IMAGE", src:url});
+        setTimeout(function(){
+          dispatcher.dispatch({name:"CHECK_IMAGE", src:url});
+        },0);
+
       });
     }
 
