@@ -102,8 +102,10 @@ var ChatPage = React.createClass({
 
     var typing = [];
     _.forEach(this.state.typing, function(n,username){
-      typing.push(<li>{username} typing...</li>);
+      typing.push(username);
     });
+
+    var typeing_elem = typing.length ? (<li>{typing.join(", ")} typing...</li>) : "";
 
     return (
       <ul className="pages">
@@ -114,7 +116,7 @@ var ChatPage = React.createClass({
           <div id="chatArea">
             <ul className="messages">
               {list}
-              {typing}
+              {typeing_elem}
             </ul>
 
 
